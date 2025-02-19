@@ -1,28 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Сердечный Посланник</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крестики-нолики для двоих</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="valentine-card">
-        <div class="heart"></div>
-        <div class="message">
-            <h1 id="greeting">С Днём святого Валентина!</h1>
-            <p id="sender">От анонимного поклонника</p>
-            <p id="custom-message">Тебе самое тёплое признание!</p>
+    <div class="container">
+        <h1>Крестики-нолики</h1>
+        <div class="board" id="board">
+            <div class="cell" data-cell-index="0"></div>
+            <div class="cell" data-cell-index="1"></div>
+            <div class="cell" data-cell-index="2"></div>
+            <div class="cell" data-cell-index="3"></div>
+            <div class="cell" data-cell-index="4"></div>
+            <div class="cell" data-cell-index="5"></div>
+            <div class="cell" data-cell-index="6"></div>
+            <div class="cell" data-cell-index="7"></div>
+            <div class="cell" data-cell-index="8"></div>
         </div>
+        <div class="message" id="message">Ходит игрок X</div>
+        <button id="restartBtn">Начать заново</button>
     </div>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const greeting = urlParams.get('greeting') || "С Днём святого Валентина!"; // Значение по умолчанию
-        const sender = urlParams.get('sender') || "От анонимного поклонника"; // Значение по умолчанию
-        const customMessage = urlParams.get('message') || "Тебе самое тёплое признание!"; //Значение по умолчанию
 
-        document.getElementById('greeting').innerText = greeting;
-        document.getElementById('sender').innerText = sender;
-        document.getElementById('custom-message').innerText = customMessage;
+    <script>
+        const board = document.getElementById('board');
+        const cells = document.querySelectorAll('.cell');
+        const message = document.getElementById('message');
+        const restartBtn = document.getElementById('restartBtn');
+
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        function handleCellClick(event) {
+            const cellIndex = parseInt(event.target.dataset.cellIndex);
+
+            if (gameBoard[cellIndex] !== '' || !gameActive) {
+                return;
+            }
+
+            gameBoard[cellIndex] = currentPlayer;
+            event.target.textContent = currentPlayer;
+            event.target.classList.add(currentPlayer === 'X' ? 'x-style' : 'o-style'); // Добавляем класс для стиля
+
+            checkGameResult();
+        }
+
+        function checkGameResult() {
+            for (const combination of winningCombinations) {
+                const [a, b, c] = combination;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    message.textContent = `Игрок ${currentPlayer} победил!`;
+                    gameActive = false;
+                    return;
+                }
+            }
+
+            if (!gameBoard.includes('')) {
+                message.textContent = 'Ничья!';
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            message.textContent = `Ходит игрок ${currentPlayer}`;
+        }
+
+        function restartGame() {
+            currentPlayer = 'X';
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            message.textContent = `Ходит игрок ${currentPlayer}`;
+
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x-style', 'o-style'); // Удаляем классы стилей
+            });
+        }
+
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+
+        restartBtn.addEventListener('click', restartGame);
     </script>
 </body>
 </html>
