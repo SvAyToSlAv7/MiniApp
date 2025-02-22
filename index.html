@@ -7,8 +7,8 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background-color: #181818; /* Еще более темный фон */
-            color: #aeea00; /* Чуть более приглушенный зеленый */
+            background: linear-gradient(to bottom, #000000, #181818); /* Градиентный фон */
+            color: #aeea00; /* Ядовито-зеленый текст */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
@@ -17,50 +17,96 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            overflow: hidden; /* Скрываем переполнение для эффекта частиц */
+        }
+
+        /* Анимированные частицы на фоне */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #00E7AF;
+            border-radius: 50%;
+            animation: float 10s linear infinite;
+            opacity: 0.5;
+        }
+
+        /* Анимация для частиц */
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-100vh) translateX(50vw);
+                opacity: 0.7;
+            }
+            75% {
+                 opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-200vh) translateX(100vw);
+                opacity: 0;
+            }
         }
 
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 700px; /* Увеличил максимальную ширину */
+            max-width: 700px;
             padding: 20px;
+            position: relative; /* Чтобы элементы отображались поверх частиц */
+            z-index: 1;
         }
 
         .gift {
-            width: 200px; /* Увеличил ширину подарка */
-            margin: 15px; /* Увеличил отступ */
+            width: 200px;
+            margin: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            border-radius: 12px; /* Скруглил углы */
-            padding: 15px; /* Увеличил отступ */
+            border-radius: 12px;
+            padding: 15px;
             box-sizing: border-box;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Добавил тень */
-            border: 2px solid #aeea00;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тень */
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid #00E7AF;
+            box-shadow: 0 8px 20px rgba(0, 231, 175, 0.3); /* Более яркая тень */
+            background-color: rgba(0, 0, 0, 0.2); /* Полупрозрачный фон */
+            backdrop-filter: blur(5px); /* Эффект размытия фона */
         }
 
         .gift:hover {
-            transform: scale(1.08); /* Увеличил увеличение */
-            background-color: rgba(174, 238, 0, 0.05); /* Едва заметное осветление */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 231, 175, 0.5); /* Еще более выраженная тень */
+            background-color: rgba(0, 231, 175, 0.1); /* Светлый фон при наведении */
         }
 
         .gift img {
             max-width: 100%;
-            max-height: 180px; /* Увеличил высоту изображения */
-            object-fit: cover; /* Обрезает изображение, чтобы оно соответствовало размерам */
+            max-height: 180px;
+            object-fit: cover;
             border-radius: 8px;
+            transition: filter 0.3s ease-in-out;
+            filter: grayscale(20%); /* Небольшая полутоновая фильтрация */
+        }
+
+        .gift:hover img {
+            filter: grayscale(0%); /* Убираем фильтрацию при наведении */
         }
 
         .price {
-            font-size: 18px; /* Увеличил размер шрифта */
+            font-size: 20px;
             text-align: center;
             margin-top: 10px;
-            font-weight: bold; /* Сделал шрифт жирным */
+            font-weight: bold;
+            color: #00E7AF;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Тень для текста */
         }
 
         .price::after {
@@ -100,6 +146,18 @@
                 tg.close();
             });
         });
+
+        // Создаем анимированные частицы
+        for (let i = 0; i < 50; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = Math.random() * 10 + 5 + 's';
+            document.body.appendChild(particle);
+        }
     </script>
 </body>
 </html>
+
+
