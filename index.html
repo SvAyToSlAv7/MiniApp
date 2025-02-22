@@ -7,159 +7,80 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #000001;
-            color: rgb(255, 255, 255);
-            text-align: center;
-        }
-        .tab {
-            background: #222;
-            padding: 10px;
-            font-size: 18px;
-            color: rgb(255, 223, 223);
+            background-color: #181818; /* Еще более темный фон */
+            color: #aeea00; /* Чуть более приглушенный зеленый */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            border-bottom: 2px solid #3498db;
-            cursor: pointer;
+            min-height: 100vh;
         }
-        .tab div {
-            margin: 0 20px;
-            padding: 10px;
-        }
-        .tab div.active {
-            background-color: #3498db;
-            border-radius: 5px;
-        }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 10px;
+            max-width: 700px; /* Увеличил максимальную ширину */
+            padding: 20px;
         }
+
         .gift {
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px;
-            width: 35%;
-            text-align: center;
+            width: 200px; /* Увеличил ширину подарка */
+            margin: 15px; /* Увеличил отступ */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 12px; /* Скруглил углы */
+            padding: 15px; /* Увеличил отступ */
+            box-sizing: border-box;
             cursor: pointer;
-            position: relative;
-            box-shadow: 0 0 10px rgb(0, 255, 26);
-            transition: background 0.3s ease;
-            animation: pulse 2s infinite;
-            background: rgba(0, 0, 0, 1); /* Полупрозрачный фон */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Добавил тень */
+            border: 2px solid #aeea00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Тень */
         }
+
+        .gift:hover {
+            transform: scale(1.08); /* Увеличил увеличение */
+            background-color: rgba(174, 238, 0, 0.05); /* Едва заметное осветление */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Более выраженная тень */
+        }
+
         .gift img {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            display: block;
-            margin: 0 auto;
+            max-width: 100%;
+            max-height: 180px; /* Увеличил высоту изображения */
+            object-fit: cover; /* Обрезает изображение, чтобы оно соответствовало размерам */
+            border-radius: 8px;
         }
+
         .price {
-            color: rgb(13, 255, 0); /* Зеленый цвет текста */
-            font-size: 18px;
-            margin-top: 5px;
+            font-size: 18px; /* Увеличил размер шрифта */
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold; /* Сделал шрифт жирным */
         }
-        .label {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: #3498db;
-            color: rgb(45, 21, 21);
-            padding: 2px 5px;
-            font-size: 12px;
-            border-radius: 5px;
-        }
-        .tirage {
-            color: rgb(0, 255, 0);
-            font-size: 18px;
-            margin-top: 5px;
-            font-family: Arial, sans-serif ;
-        }
-        @media (max-width: 100px) {
-            .gift {
-                width: 5%;
-            }
-        }
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            13% {
-                transform: scale(1.006);
-            }
-            0.7% {
-                transform: scale(1);
-            }
+
+        .price::after {
+            content: " 🌟"; /* Символ звездочки */
         }
     </style>
 </head>
 <body>
-    <div class="tab">
-        <div id="storeTab" class="active">Стикеры</div>
-        <div id="tirageTab">Тиражи</div>
-    </div><div id="storeContainer" class="container">
-        <div class="gift" data-id="mammoth" data-price="100" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-09.jpg" alt="VOCO">
-            <div class="price">⭐️ 100</div>
+    <div class="container">
+        <div class="gift" data-id="trump" data-price="100">
+            <img src="" alt="Дональд Трамп">
+            <div class="price">100</div>
         </div>
-        <div class="gift" data-id="durov" data-price="70" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-47.jpg" alt="VOCO">
-            <div class="price">⭐️ 70</div>
+        <div class="gift" data-id="cat" data-price="75">
+            <img src="" alt="Кот">
+            <div class="price">75</div>
         </div>
-        <div class="gift" data-id="dog" data-price="25" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-02_22-21-28.jpg" alt="VOCO">
-            <div class="price">⭐️ 25</div>
-        </div>
-        <div class="gift" data-id="mic" data-price="10" data-bg="#1C1C1C">
-            <img src="photo_2025-02-02_22-16-03.jpg" alt="VOCO">
-            <div class="price">⭐️ 10</div>
-        </div>
-        <div class="gift" data-id="cap" data-price="150" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-40-00.jpg" alt="VOCO">
-            <div class="price">⭐️ 150</div>
-        </div>
-        <div class="gift" data-id="Doodle" data-price="25" data-bg="#4630C0">
-            <div class="label">Изумрудный</div>
-            <img src="photo_2025-02-04_20-07-09.jpg" alt="VOCO">
-            <div class="price">⭐️ 25</div>
-        </div>
-    </div>
-
-    <div id="tirageContainer" class="container" style="display:none;">
-        <div class="gift" data-id="mammoth" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-09.jpg" alt="VOCO">
-            <div class="tirage">1 из 35</div>
-        </div>
-        <div class="gift" data-id="durov" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-47.jpg" alt="VOCO">
-            <div class="tirage">1 из 45</div>
-        </div>
-        <div class="gift" data-id="dog" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-02_22-21-28.jpg" alt="VOCO">
-            <div class="tirage">1 из 60</div>
-        </div>
-        <div class="gift" data-id="mic" data-bg="#1C1C1C">
-            <img src="photo_2025-02-02_22-16-03.jpg" alt="VOCO">
-            <div class="tirage">1 из 150</div>
-        </div>
-        <div class="gift" data-id="cap" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-40-00.jpg" alt="VOCO">
-            <div class="tirage">1 из 20</div>
-        </div>
-        <div class="gift" data-id="Doodle" data-bg="#4630C0">
-            <div class="label">Изумрудный</div>
-            <img src="photo_2025-02-04_20-07-09.jpg" alt="VOCO">
-            <div class="tirage">1 из 45</div>
+        <div class="gift" data-id="telegram" data-price="50">
+            <img src="" alt="Telegram">
+            <div class="price">50</div>
         </div>
     </div>
 
@@ -168,50 +89,16 @@
         tg.expand();
 
         document.querySelectorAll(".gift").forEach(gift => {
-            let bgColor = gift.dataset.bg;
-            if (bgColor) {
-                gift.style.background = bgColor;
-            }
-        });
-
-        function generateRandomNumber() {
-            return Math.floor(10000 + Math.random() * 90000);
-        }
-
-        let purchasedGifts = JSON.parse(localStorage.getItem('purchasedGifts')) || [];
-        document.querySelectorAll(".gift").forEach(gift => {
             gift.addEventListener("click", async function() {
                 let id = gift.dataset.id;
                 let price = gift.dataset.price;
-                let giftNumber = generateRandomNumber();
 
-                purchasedGifts.push({ gift_id: id, gift_number: giftNumber });
-                localStorage.setItem('purchasedGifts', JSON.stringify(purchasedGifts));
+                // Отправляем данные боту
+                tg.sendData(JSON.stringify({ gift_id: id, price: price }));
 
-                await tg.sendData(JSON.stringify({ gift_id: id, price: price, gift_number: giftNumber }));
+                // Закрываем Mini App
+                tg.close();
             });
-        });
-        tg.onEvent('onPaymentSuccess', () => {
-            alert("Спасибо за покупку! Все подарки хранятся у администратора.");
-        });
-
-        const storeTab = document.getElementById("storeTab");
-        const tirageTab = document.getElementById("tirageTab");
-        const storeContainer = document.getElementById("storeContainer");
-        const tirageContainer = document.getElementById("tirageContainer");
-
-        storeTab.addEventListener("click", () => {
-            storeTab.classList.add("active");
-            tirageTab.classList.remove("active");
-            storeContainer.style.display = "flex";
-            tirageContainer.style.display = "none";
-        });
-
-        tirageTab.addEventListener("click", () => {
-            storeTab.classList.remove("active");
-            tirageTab.classList.add("active");
-            storeContainer.style.display = "none";
-            tirageContainer.style.display = "flex";
         });
     </script>
 </body>
