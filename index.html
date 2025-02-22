@@ -7,20 +7,19 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            background: linear-gradient(to bottom, #000000, #181818); /* Градиентный фон */
-            color: #aeea00; /* Ядовито-зеленый текст */
+            background: linear-gradient(to bottom, #000000, #181818);
+            color: #aeea00;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            overflow: hidden; /* Скрываем переполнение для эффекта частиц */
+            overflow: hidden; /* Hide overflow for particles */
         }
 
-        /* Анимированные частицы на фоне */
+        /* Animated Particles */
         .particle {
             position: absolute;
             width: 10px;
@@ -31,7 +30,6 @@
             opacity: 0.5;
         }
 
-        /* Анимация для частиц */
         @keyframes float {
             0% {
                 transform: translateY(0) translateX(0);
@@ -53,14 +51,39 @@
             }
         }
 
+        /* Container for scrollable content */
+        .scrollable-container {
+            max-width: 700px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 80vh; /* Limit the height of the container */
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #00E7AF #333; /* For Firefox */
+            margin-bottom: 20px;
+        }
+
+        /* Style the scrollbar for WebKit browsers (Chrome, Safari) */
+        .scrollable-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollable-container::-webkit-scrollbar-track {
+            background: #333;
+        }
+
+        .scrollable-container::-webkit-scrollbar-thumb {
+            background-color: #00E7AF;
+            border-radius: 3px;
+        }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 700px;
-            padding: 20px;
-            position: relative; /* Чтобы элементы отображались поверх частиц */
-            z-index: 1;
+            width: 100%; /* Occupy full width of the scrollable container */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
         }
 
         .gift {
@@ -76,15 +99,15 @@
             cursor: pointer;
             transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             border: 2px solid #00E7AF;
-            box-shadow: 0 8px 20px rgba(0, 231, 175, 0.3); /* Более яркая тень */
-            background-color: rgba(0, 0, 0, 0.2); /* Полупрозрачный фон */
-            backdrop-filter: blur(5px); /* Эффект размытия фона */
+            box-shadow: 0 8px 20px rgba(0, 231, 175, 0.3);
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
 
         .gift:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(0, 231, 175, 0.5); /* Еще более выраженная тень */
-            background-color: rgba(0, 231, 175, 0.1); /* Светлый фон при наведении */
+            box-shadow: 0 12px 30px rgba(0, 231, 175, 0.5);
+            background-color: rgba(0, 231, 175, 0.1);
         }
 
         .gift img {
@@ -93,11 +116,11 @@
             object-fit: cover;
             border-radius: 8px;
             transition: filter 0.3s ease-in-out;
-            filter: grayscale(20%); /* Небольшая полутоновая фильтрация */
+            filter: grayscale(20%);
         }
 
         .gift:hover img {
-            filter: grayscale(0%); /* Убираем фильтрацию при наведении */
+            filter: grayscale(0%);
         }
 
         .price {
@@ -106,27 +129,53 @@
             margin-top: 10px;
             font-weight: bold;
             color: #00E7AF;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Тень для текста */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .price::after {
-            content: " 🌟"; /* Символ звездочки */
+            content: " 🌟";
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="gift" data-id="trump" data-price="100">
-            <img src="donald_tramp.jpeg" alt="Дональд Трамп">
-            <div class="price">100</div>
-        </div>
-        <div class="gift" data-id="cat" data-price="75">
-            <img src="cat.jpg" alt="Кот">
-            <div class="price">75</div>
-        </div>
-        <div class="gift" data-id="telegram" data-price="50">
-            <img src="tg.jpg" alt="Telegram">
-            <div class="price">50</div>
+    <div class="scrollable-container">
+        <div class="container">
+            <div class="gift" data-id="trump" data-price="100">
+                <img src="donald_tramp.jpeg" alt="Дональд Трамп">
+                <div class="price">100</div>
+            </div>
+            <div class="gift" data-id="cat" data-price="75">
+                <img src="cat.jpg" alt="Кот">
+                <div class="price">75</div>
+            </div>
+            <div class="gift" data-id="telegram" data-price="50">
+                <img src="tg.jpg" alt="Telegram">
+                <div class="price">50</div>
+            </div>
+              <div class="gift" data-id="trump" data-price="100">
+                <img src="donald_tramp.jpeg" alt="Дональд Трамп">
+                <div class="price">100</div>
+            </div>
+            <div class="gift" data-id="cat" data-price="75">
+                <img src="cat.jpg" alt="Кот">
+                <div class="price">75</div>
+            </div>
+            <div class="gift" data-id="telegram" data-price="50">
+                <img src="tg.jpg" alt="Telegram">
+                <div class="price">50</div>
+            </div>
+              <div class="gift" data-id="trump" data-price="100">
+                <img src="donald_tramp.jpeg" alt="Дональд Трамп">
+                <div class="price">100</div>
+            </div>
+            <div class="gift" data-id="cat" data-price="75">
+                <img src="cat.jpg" alt="Кот">
+                <div class="price">75</div>
+            </div>
+            <div class="gift" data-id="telegram" data-price="50">
+                <img src="tg.jpg" alt="Telegram">
+                <div class="price">50</div>
+            </div>
         </div>
     </div>
 
@@ -147,7 +196,7 @@
             });
         });
 
-        // Создаем анимированные частицы
+        // Create animated particles
         for (let i = 0; i < 50; i++) {
             let particle = document.createElement('div');
             particle.classList.add('particle');
@@ -159,5 +208,6 @@
     </script>
 </body>
 </html>
+
 
 
