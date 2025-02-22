@@ -1,216 +1,71 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Магазин подарков</title>
+    <title>My Telegram Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #000000;
-            color: rgb(255, 255, 255);
-            text-align: center;
-        }
-        .tab {
-            background: #222;
-            padding: 10px;
-            font-size: 18px;
-            color: rgb(255, 223, 223);
-            display: flex;
-            justify-content: center;
-            border-bottom: 2px solid #3498db;
-            cursor: pointer;
-        }
-        .tab div {
-            margin: 0 20px;
-            padding: 10px;
-        }
-        .tab div.active {
-            background-color: #3498db;
-            border-radius: 5px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 10px;
-        }
-        .gift {
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px;
-            width: 35%;
-            text-align: center;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 0 10px rgb(0, 255, 26);
-            transition: background 0.3s ease;
-            animation: pulse 2s infinite;
-            background: rgba(0, 0, 0, 1); /* Полупрозрачный фон */
-        }
-        .gift img {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            display: block;
-            margin: 0 auto;
-        }
-        .price {
-            color: rgb(13, 255, 0); /* Зеленый цвет текста */
-            font-size: 18px;
-            margin-top: 5px;
-        }
-        .label {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: #3498db;
-            color: rgb(45, 21, 21);
-            padding: 2px 5px;
-            font-size: 12px;
-            border-radius: 5px;
-        }
-        .tirage {
-            color: rgb(0, 255, 0);
-            font-size: 18px;
-            margin-top: 5px;
-            font-family: Arial, sans-serif ;
-        }
-        @media (max-width: 100px) {
-            .gift {
-                width: 5%;
-            }
-        }
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            13% {
-                transform: scale(1.006);
-            }
-            0.7% {
-                transform: scale(1);
-            }
+            margin: 0;
+            padding: 20px;
+            color: var(--tg-theme-text-color);
+            background-color: var(--tg-theme-bg-color);
         }
     </style>
 </head>
 <body>
-    <div class="tab">
-        <div id="storeTab" class="active">Стикеры</div>
-        <div id="tirageTab">Тиражи</div>
-    </div>
-    <div id="storeContainer" class="container">
-        <div class="gift" data-id="mammoth" data-price="100" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-09.jpg" alt="VOCO">
-            <div class="price">⭐️ 100</div>
-        </div>
-        <div class="gift" data-id="durov" data-price="70" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-47.jpg" alt="VOCO">
-            <div class="price">⭐️ 70</div>
-        </div>
-        <div class="gift" data-id="dog" data-price="25" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-02_22-21-28.jpg" alt="VOCO">
-            <div class="price">⭐️ 25</div>
-        </div>
-        <div class="gift" data-id="mic" data-price="10" data-bg="#1C1C1C">
-            <img src="photo_2025-02-02_22-16-03.jpg" alt="VOCO">
-            <div class="price">⭐️ 10</div>
-        </div>
-        <div class="gift" data-id="cap" data-price="150" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-40-00.jpg" alt="VOCO">
-            <div class="price">⭐️ 150</div>
-        </div>
-        <div class="gift" data-id="Doodle" data-price="25" data-bg="#4630C0">
-            <div class="label">Изумрудный</div>
-            <img src="photo_2025-02-04_20-07-09.jpg" alt="VOCO">
-            <div class="price">⭐️ 25</div>
-        </div>
-    </div>
-    <div id="tirageContainer" class="container" style="display:none;">
-        <div class="gift" data-id="mammoth" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-09.jpg" alt="VOCO">
-            <div class="tirage">1 из 35</div>
-        </div>
-        <div class="gift" data-id="durov" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-24-47.jpg" alt="VOCO">
-            <div class="tirage">1 из 45</div>
-        </div>
-        <div class="gift" data-id="dog" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-02_22-21-28.jpg" alt="VOCO">
-            <div class="tirage">1 из 60</div>
-        </div>
-        <div class="gift" data-id="mic" data-bg="#1C1C1C">
-            <img src="photo_2025-02-02_22-16-03.jpg" alt="VOCO">
-            <div class="tirage">1 из 150</div>
-        </div>
-        <div class="gift" data-id="cap" data-bg="#1C1C1C">
-            <div class="label">Редкий</div>
-            <img src="photo_2025-02-03_17-40-00.jpg" alt="VOCO">
-            <div class="tirage">1 из 20</div>
-        </div>
-        <div class="gift" data-id="Doodle" data-bg="#4630C0">
-            <div class="label">Изумрудный</div>
-            <img src="photo_2025-02-04_20-07-09.jpg" alt="VOCO">
-            <div class="tirage">1 из 45</div>
-        </div>
-    </div>
+    <h1>Welcome to My Telegram Mini App!</h1>
+    <p>This is a basic example of a Telegram Mini App.</p>
+
+    <button class="button" id="showAlert">Show Alert</button>
+    <button class="button" id="showConfirm">Show Confirm</button>
+    <button class="button" id="showPopup">Show Popup</button>
+
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand();
 
-        document.querySelectorAll(".gift").forEach(gift => {
-            let bgColor = gift.dataset.bg;
-            if (bgColor) {
-                gift.style.background = bgColor;
-            }
+        tg.initData;
+        tg.ready();
+
+        document.getElementById('showAlert').addEventListener('click', function() {
+            tg.showAlert('This is an alert!');
         });
 
-        function generateRandomNumber() {
-            return Math.floor(10000 + Math.random() * 90000);
-        }
-
-        let purchasedGifts = JSON.parse(localStorage.getItem('purchasedGifts')) || [];
-        document.querySelectorAll(".gift").forEach(gift => {
-            gift.addEventListener("click", async function() {
-                let id = gift.dataset.id;
-                let price = gift.dataset.price;
-                let giftNumber = generateRandomNumber();
-
-                purchasedGifts.push({ gift_id: id, gift_number: giftNumber });
-                localStorage.setItem('purchasedGifts', JSON.stringify(purchasedGifts));
-
-                await tg.sendData(JSON.stringify({ gift_id: id, price: price, gift_number: giftNumber }));
+        document.getElementById('showConfirm').addEventListener('click', function() {
+            tg.showConfirm('Are you sure?', function(confirmed) {
+                if (confirmed) {
+                    tg.showAlert('You confirmed!');
+                } else {
+                    tg.showAlert('You cancelled!');
+                }
             });
         });
-        tg.onEvent('onPaymentSuccess', () => {
-            alert("Спасибо за покупку! Все подарки хранятся у администратора.");
+
+        document.getElementById('showPopup').addEventListener('click', function() {
+            tg.showPopup({
+                title: "Popup Title",
+                message: "This is a popup message",
+                buttons: [
+                    {id: "ok", type: "ok", text: "OK"},
+                    {id: "cancel", type: "cancel", text: "Cancel"}
+                ]
+            }, function(buttonId) {
+                tg.showAlert("You clicked: " + buttonId);
+            });
         });
 
-        const storeTab = document.getElementById("storeTab");
-        const tirageTab = document.getElementById("tirageTab");
-        const storeContainer = document.getElementById("storeContainer");
-        const tirageContainer = document.getElementById("tirageContainer");
-
-        storeTab.addEventListener("click", () => {
-            storeTab.classList.add("active");
-            tirageTab.classList.remove("active");
-            storeContainer.style.display = "flex";
-            tirageContainer.style.display = "none";
+        tg.MainButton.setText("Main Action").show().onClick(function(){
+            tg.showAlert("Main button clicked!");
         });
 
-        tirageTab.addEventListener("click", () => {
-            storeTab.classList.remove("active");
-            tirageTab.classList.add("active");
-            storeContainer.style.display = "none";
-            tirageContainer.style.display = "flex";
+        tg.BackButton.onClick(function(){
+            tg.showAlert("Back button clicked!");
+        });
+
+        tg.onEvent('mainButtonClicked', function(){
+            tg.setMainButtonColor('light');
         });
     </script>
 </body>
