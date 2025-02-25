@@ -1,120 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mini App - Подарки</title>
+    <title>Mini App - Зеленая Рулетка</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #121212; /* Черный фон */
+            color: #ffffff; /* Белый текст */
             text-align: center;
             margin: 0;
             padding: 20px;
         }
 
         h1 {
-            color: #e44d26;
+            color: #00ff00; /* Зеленый заголовок */
             margin-bottom: 20px;
         }
 
-        .gift-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 600px;
+        #rouletteContainer {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3); /* Зеленая тень */
+        }
+
+        #roulette {
+            width: 100%;
+            height: 100%;
+            transition: transform 5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Плавное замедление */
+            background-image: url('https://i.imgur.com/5sQx7hN.png'); /* Замените на свой фон рулетки */
+            background-size: cover;
+            border-radius: 50%;
+        }
+
+        #spinButton {
+            position: relative;
+            top: -100px;
             margin: 0 auto;
-        }
-
-        .gift {
-            width: 150px;
-            height: 150px;
-            margin: 10px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            background-color: #00ff00; /* Зеленая кнопка */
+            color: #000000; /* Черный текст на кнопке */
+            border: none;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 10px;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .gift:hover {
-            transform: translateY(-5px);
-        }
-
-        .gift img {
-            max-width: 80px;
-            max-height: 80px;
-            margin-bottom: 10px;
-        }
-
-        .gift p {
-            margin: 0;
+            border-radius: 5px;
             font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3); /* Зеленая тень кнопки */
+        }
+
+        #spinButton:hover {
+            background-color: #00c800; /* Более темный зеленый цвет при наведении */
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00ff00; /* Зеленый цвет результата */
         }
     </style>
 </head>
 <body>
 
-    <h1>Выберите подарок</h1>
+    <h1>Зеленая Рулетка Подарков</h1>
 
-    <div class="gift-container">
-        <div class="gift" data-id="1" data-price="50">
-            <img src="" alt="Gift 1">
-            <p>Скидка 10%</p>
-        </div>
-        <div class="gift" data-id="2" data-price="50">
-            <img src="" alt="Gift 2">
-            <p>Бесплатная доставка</p>
-        </div>
-        <div class="gift" data-id="3" data-price="50">
-            <img src="" alt="Gift 3">
-            <p>Стикерпак</p>
-        </div>
-        <div class="gift" data-id="4" data-price="50">
-            <img src="" alt="Gift 4">
-            <p>Промокод 500</p>
-        </div>
-        <div class="gift" data-id="5" data-price="50">
-            <img src="" alt="Gift 5">
-            <p>Секретный подарок</p>
-        </div>
-        <div class="gift" data-id="6" data-price="50">
-            <img src="" alt="Gift 6">
-            <p>Купон 20%</p>
-        </div>
-        <div class="gift" data-id="7" data-price="50">
-            <img src="" alt="Gift 7">
-            <p>Футболка</p>
-        </div>
-        <div class="gift" data-id="8" data-price="50">
-            <img src="" alt="Gift 8">
-            <p>Кружка</p>
-        </div>
-        <div class="gift" data-id="9" data-price="50">
-            <img src="" alt="Gift 9">
-            <p>Брелок</p>
-        </div>
+    <div id="rouletteContainer">
+        <div id="roulette"></div>
     </div>
+
+    <button id="spinButton">Крутить рулетку (50 звёзд)</button>
+
+    <div id="result"></div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        document.querySelectorAll(".gift").forEach(gift => {
-            gift.addEventListener("click", function() {
-                let id = gift.dataset.id;
-                let price = gift.dataset.price;
+        const spinButton = document.getElementById('spinButton');
+        const roulette = document.getElementById('roulette');
+        const resultDiv = document.getElementById('result');
 
-                tg.sendData(JSON.stringify({ gift_id: id, price: price }));
+        const gifts = [
+            "Скидка 10%",
+            "Бесплатная доставка",
+            "Стикерпак",
+            "Промокод на 500 рублей",
+            "Секретный подарок!",
+            "Купон на 20%",
+            "Футболка с логотипом",
+            "Кружка с вашим дизайном",
+            "Брелок"
+        ];
+
+        spinButton.addEventListener('click', spinRoulette);
+
+        function spinRoulette() {
+            const randomRotation = Math.floor(Math.random() * 3600) + 360;
+            roulette.style.transition = 'transform 5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            roulette.style.transform = `rotate(${randomRotation}deg)`;
+
+            spinButton.disabled = true;
+
+            setTimeout(() => {
+                roulette.style.transition = 'none';
+                const finalAngle = randomRotation % 360;
+                const winningSegment = Math.floor(finalAngle / (360 / gifts.length));
+                const gift = gifts[winningSegment];
+
+                resultDiv.textContent = `Вы выиграли: ${gift}!`;
+                spinButton.disabled = false;
+
+                // Отправка данных боту
+                const giftId = winningSegment + 1;
+                const price = 50;
+                const data = JSON.stringify({ gift_id: giftId, price: price });
+                tg.sendData(data);
+
                 tg.close();
-            });
-        });
+
+            }, 5000);
+        }
     </script>
 
 </body>
