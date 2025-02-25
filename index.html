@@ -1,164 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Mini App - Вращающаяся Зеленая Рулетка</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Магазин подарков</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            text-align: center;
+            background: linear-gradient(to bottom, #000000, #181818);
+            color: #aeea00;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            height: 100vh; /* Фиксируем высоту body */
+            overflow: hidden; /* Hide overflow for particles */
+            padding-bottom: env(safe-area-inset-bottom); /* Safe area for iOS */
         }
 
-        h1 {
-            color: #00ff00;
+        /* Animated Particles */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #00E7AF;
+            border-radius: 50%;
+            animation: float 10s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-100vh) translateX(50vw);
+                opacity: 0.7;
+            }
+            75% {
+                 opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-200vh) translateX(100vw);
+                opacity: 0;
+            }
+        }
+
+        /* Container for scrollable content */
+        .scrollable-container {
+            max-width: 700px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: calc(100vh - 40px); /* Limit the height of the container */
+            scrollbar-width: thin; /* For Firefox */
+            scrollbar-color: #00E7AF #333; /* For Firefox */
             margin-bottom: 20px;
         }
 
-        #rouletteContainer {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            overflow: hidden;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
+        /* Style the scrollbar for WebKit browsers (Chrome, Safari) */
+        .scrollable-container::-webkit-scrollbar {
+            width: 6px;
         }
 
-        #roulette {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: transform 5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Плавное замедление */
+        .scrollable-container::-webkit-scrollbar-track {
+            background: #333;
         }
 
-        .segment {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 150px 150px 0 0;
-            border-color: transparent #00ff00 transparent transparent;
-            transform-origin: top left;
-            font-size: 14px;  /* Размер текста */
-            color: black;        /* Цвет текста */
-            text-align: center; /* Выравнивание текста */
-            line-height: 300px; /* Центрирование текста по вертикали */
-            width: 300px;        /* Ensure segments take full width to center text*/
-            height: 300px;
+        .scrollable-container::-webkit-scrollbar-thumb {
+            background-color: #00E7AF;
+            border-radius: 3px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%; /* Occupy full width of the scrollable container */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+
+        .gift {
+            width: 200px;
+            margin: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 12px;
+            padding: 15px;
             box-sizing: border-box;
-        }
-
-        /* Цвета и позиции для сегментов */
-        .segment:nth-child(1) { transform: rotate(0deg); border-color: transparent #00ff00 transparent transparent; }
-        .segment:nth-child(2) { transform: rotate(40deg); border-color: transparent #32CD32 transparent transparent; }
-        .segment:nth-child(3) { transform: rotate(80deg); border-color: transparent #00FA9A transparent transparent; }
-        .segment:nth-child(4) { transform: rotate(120deg); border-color: transparent #90EE90 transparent transparent; }
-        .segment:nth-child(5) { transform: rotate(160deg); border-color: transparent #98FB98 transparent transparent; }
-        .segment:nth-child(6) { transform: rotate(200deg); border-color: transparent #ADFF2F transparent transparent; }
-        .segment:nth-child(7) { transform: rotate(240deg); border-color: transparent #7FFF00 transparent transparent; }
-        .segment:nth-child(8) { transform: rotate(280deg); border-color: transparent #7CFC00 transparent transparent; }
-        .segment:nth-child(9) { transform: rotate(320deg); border-color: transparent #00FF7F transparent transparent; }
-
-        #spinButton {
-            position: relative;
-            top: -100px;
-            margin: 0 auto;
-            padding: 10px 20px;
-            background-color: #00ff00;
-            color: #000000;
-            border: none;
             cursor: pointer;
-            border-radius: 5px;
-            font-size: 1.1em;
-            box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid #00E7AF;
+            box-shadow: 0 8px 20px rgba(0, 231, 175, 0.3);
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
 
-        #spinButton:hover {
-            background-color: #00c800;
+        .gift:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 231, 175, 0.5);
+            background-color: rgba(0, 231, 175, 0.1);
         }
 
-        #result {
-            margin-top: 20px;
-            font-size: 1.2em;
+        .gift img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: filter 0.3s ease-in-out;
+            filter: grayscale(20%);
+        }
+
+        .gift:hover img {
+            filter: grayscale(0%);
+        }
+
+        .price {
+            font-size: 20px;
+            text-align: center;
+            margin-top: 10px;
             font-weight: bold;
-            color: #00ff00;
+            color: #00E7AF;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .price::after {
+            content: " 🌟";
         }
     </style>
 </head>
 <body>
-
-    <h1>Вращающаяся Зеленая Рулетка Подарков</h1>
-
-    <div id="rouletteContainer">
-        <div id="roulette">
-            <div class="segment">Скидка 10%</div>
-            <div class="segment">Беспл. доставка</div>
-            <div class="segment">Стикерпак</div>
-            <div class="segment">Промокод 500</div>
-            <div class="segment">Секретный подарок</div>
-            <div class="segment">Купон 20%</div>
-            <div class="segment">Футболка</div>
-            <div class="segment">Кружка</div>
-            <div class="segment">Брелок</div>
+    <div class="scrollable-container">
+        <div class="container">
+            <div class="gift" data-id="Donald Trump" data-price="100">
+                <img src="donald_tramp.jpeg" alt="Donald Trump">
+                <div class="price">100</div>
+            </div>
+            <div class="gift" data-id="Cat" data-price="50">
+                <img src="cat.jpg" alt="Cat">
+                <div class="price">50</div>
+            </div>
+            <div class="gift" data-id="Telegram" data-price="25">
+                <img src="tg.jpg" alt="Telegram">
+                <div class="price">25</div>
+            </div>
+              <div class="gift" data-id="Toncoin" data-price="25">
+                <img src="toncoin.png" alt="Toncoin">
+                <div class="price">25</div>
+            </div>
+            <div class="gift" data-id="Astronaut" data-price="75">
+                <img src="astronaut.png" alt="Astronaut">
+                <div class="price">75</div>
+            </div>
         </div>
     </div>
-
-    <button id="spinButton">Крутить рулетку (50 звёзд)</button>
-
-    <div id="result"></div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        const spinButton = document.getElementById('spinButton');
-        const roulette = document.getElementById('roulette');
-        const resultDiv = document.getElementById('result');
+        function setScrollableHeight() {
+            let windowHeight = window.innerHeight;
+            let container = document.querySelector('.scrollable-container');
+            container.style.maxHeight = (windowHeight - 40) + 'px'; // Adjust 40px as needed
+        }
 
-        const gifts = [
-            "Скидка 10%",
-            "Беспл. доставка",
-            "Стикерпак",
-            "Промокод 500",
-            "Секретный подарок",
-            "Купон 20%",
-            "Футболка",
-            "Кружка",
-            "Брелок"
-        ];
+        setScrollableHeight();
 
-        spinButton.addEventListener('click', spinRoulette);
+        window.addEventListener('resize', setScrollableHeight); // Update on resize
 
-        function spinRoulette() {
-            const randomRotation = Math.floor(Math.random() * 3600) + 360;
-            roulette.style.transition = 'transform 5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            roulette.style.transform = `rotate(${randomRotation}deg)`;
+        document.querySelectorAll(".gift").forEach(gift => {
+            gift.addEventListener("click", async function() {
+                let id = gift.dataset.id;
+                let price = gift.dataset.price;
 
-            spinButton.disabled = true;
+                // Отправляем данные боту
+                tg.sendData(JSON.stringify({ gift_id: id, price: price }));
 
-            setTimeout(() => {
-                roulette.style.transition = 'none';
-                const finalAngle = randomRotation % 360;
-                const winningSegment = Math.floor(finalAngle / (360 / gifts.length));
-                const gift = gifts[winningSegment];
-
-                resultDiv.textContent = `Вы выиграли: ${gift}!`;
-                spinButton.disabled = false;
-
-                const giftId = winningSegment + 1;
-                const price = 50;
-                const data = JSON.stringify({ gift_id: giftId, price: price });
-                tg.sendData(data);
-
+                // Закрываем Mini App
                 tg.close();
+            });
+        });
 
-            }, 5000);
+        // Create animated particles
+        for (let i = 0; i < 50; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = Math.random() * 10 + 5 + 's';
+            document.body.appendChild(particle);
         }
     </script>
-
 </body>
 </html>
