@@ -1,167 +1,104 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Магазин подарков</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Mini App - Подарки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            background: linear-gradient(to bottom, #000000, #181818);
-            color: #aeea00;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
             margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            height: 100vh; /* Фиксируем высоту body */
-            overflow: hidden; /* Hide overflow for particles */
-            padding-bottom: env(safe-area-inset-bottom); /* Safe area for iOS */
-        }
-
-        /* Animated Particles */
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #00E7AF;
-            border-radius: 50%;
-            animation: float 10s linear infinite;
-            opacity: 0.5;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            25% {
-                opacity: 0.7;
-            }
-            50% {
-                transform: translateY(-100vh) translateX(50vw);
-                opacity: 0.7;
-            }
-            75% {
-                 opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-200vh) translateX(100vw);
-                opacity: 0;
-            }
-        }
-
-        /* Container for scrollable content */
-        .scrollable-container {
-            max-width: 700px;
             padding: 20px;
-            position: relative;
-            z-index: 1;
-            overflow-y: auto; /* Enable vertical scrolling */
-            max-height: calc(100vh - 40px); /* Limit the height of the container */
-            scrollbar-width: thin; /* For Firefox */
-            scrollbar-color: #00E7AF #333; /* For Firefox */
+        }
+
+        h1 {
+            color: #e44d26;
             margin-bottom: 20px;
         }
 
-        /* Style the scrollbar for WebKit browsers (Chrome, Safari) */
-        .scrollable-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .scrollable-container::-webkit-scrollbar-track {
-            background: #333;
-        }
-
-        .scrollable-container::-webkit-scrollbar-thumb {
-            background-color: #00E7AF;
-            border-radius: 3px;
-        }
-
-        .container {
+        .gift-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            width: 100%; /* Occupy full width of the scrollable container */
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .gift {
-            width: 200px;
-            margin: 15px;
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            border-radius: 12px;
-            padding: 15px;
-            box-sizing: border-box;
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 2px solid #00E7AF;
-            box-shadow: 0 8px 20px rgba(0, 231, 175, 0.3);
-            background-color: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.2s ease-in-out;
         }
 
         .gift:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 30px rgba(0, 231, 175, 0.5);
-            background-color: rgba(0, 231, 175, 0.1);
+            transform: translateY(-5px);
         }
 
         .gift img {
-            max-width: 100%;
-            max-height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: filter 0.3s ease-in-out;
-            filter: grayscale(20%);
+            max-width: 80px;
+            max-height: 80px;
+            margin-bottom: 10px;
         }
 
-        .gift:hover img {
-            filter: grayscale(0%);
-        }
-
-        .price {
-            font-size: 20px;
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #00E7AF;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .price::after {
-            content: " 🌟";
+        .gift p {
+            margin: 0;
+            font-size: 1.1em;
         }
     </style>
 </head>
 <body>
-    <div class="scrollable-container">
-        <div class="container">
-            <div class="gift" data-id="Donald Trump" data-price="100">
-                <img src="donald_tramp.jpeg" alt="Donald Trump">
-                <div class="price">100</div>
-            </div>
-            <div class="gift" data-id="Cat" data-price="50">
-                <img src="cat.jpg" alt="Cat">
-                <div class="price">50</div>
-            </div>
-            <div class="gift" data-id="Telegram" data-price="25">
-                <img src="tg.jpg" alt="Telegram">
-                <div class="price">25</div>
-            </div>
-              <div class="gift" data-id="Toncoin" data-price="25">
-                <img src="toncoin.png" alt="Toncoin">
-                <div class="price">25</div>
-            </div>
-            <div class="gift" data-id="Astronaut" data-price="75">
-                <img src="astronaut.png" alt="Astronaut">
-                <div class="price">75</div>
-            </div>
+
+    <h1>Выберите подарок</h1>
+
+    <div class="gift-container">
+        <div class="gift" data-id="1" data-price="50">
+            <img src="" alt="Gift 1">
+            <p>Скидка 10%</p>
+        </div>
+        <div class="gift" data-id="2" data-price="50">
+            <img src="" alt="Gift 2">
+            <p>Бесплатная доставка</p>
+        </div>
+        <div class="gift" data-id="3" data-price="50">
+            <img src="" alt="Gift 3">
+            <p>Стикерпак</p>
+        </div>
+        <div class="gift" data-id="4" data-price="50">
+            <img src="" alt="Gift 4">
+            <p>Промокод 500</p>
+        </div>
+        <div class="gift" data-id="5" data-price="50">
+            <img src="" alt="Gift 5">
+            <p>Секретный подарок</p>
+        </div>
+        <div class="gift" data-id="6" data-price="50">
+            <img src="" alt="Gift 6">
+            <p>Купон 20%</p>
+        </div>
+        <div class="gift" data-id="7" data-price="50">
+            <img src="" alt="Gift 7">
+            <p>Футболка</p>
+        </div>
+        <div class="gift" data-id="8" data-price="50">
+            <img src="" alt="Gift 8">
+            <p>Кружка</p>
+        </div>
+        <div class="gift" data-id="9" data-price="50">
+            <img src="" alt="Gift 9">
+            <p>Брелок</p>
         </div>
     </div>
 
@@ -169,39 +106,17 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        function setScrollableHeight() {
-            let windowHeight = window.innerHeight;
-            let container = document.querySelector('.scrollable-container');
-            container.style.maxHeight = (windowHeight - 40) + 'px'; // Adjust 40px as needed
-        }
-
-        setScrollableHeight();
-
-        window.addEventListener('resize', setScrollableHeight); // Update on resize
-
         document.querySelectorAll(".gift").forEach(gift => {
-            gift.addEventListener("click", async function() {
+            gift.addEventListener("click", function() {
                 let id = gift.dataset.id;
                 let price = gift.dataset.price;
 
-                // Отправляем данные боту
                 tg.sendData(JSON.stringify({ gift_id: id, price: price }));
-
-                // Закрываем Mini App
                 tg.close();
             });
         });
-
-        // Create animated particles
-        for (let i = 0; i < 50; i++) {
-            let particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.top = Math.random() * 100 + 'vh';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDuration = Math.random() * 10 + 5 + 's';
-            document.body.appendChild(particle);
-        }
     </script>
+
 </body>
 </html>
 
