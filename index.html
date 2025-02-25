@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mini App - Зеленая Рулетка</title>
+    <title>Mini App - Вращающаяся Зеленая Рулетка</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #121212; /* Черный фон */
-            color: #ffffff; /* Белый текст */
+            background-color: #121212;
+            color: #ffffff;
             text-align: center;
             margin: 0;
             padding: 20px;
         }
 
         h1 {
-            color: #00ff00; /* Зеленый заголовок */
+            color: #00ff00;
             margin-bottom: 20px;
         }
 
@@ -25,14 +25,14 @@
             margin: 20px auto;
             overflow: hidden;
             border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3); /* Зеленая тень */
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.3);
         }
 
         #roulette {
             width: 100%;
             height: 100%;
+            position: relative;
             transition: transform 5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Плавное замедление */
-            position: relative; /* Для позиционирования сегментов */
         }
 
         .segment {
@@ -41,62 +41,69 @@
             height: 0;
             border-style: solid;
             border-width: 150px 150px 0 0;
-            border-color: transparent #00ff00 transparent transparent; /* Зеленый сегмент */
+            border-color: transparent #00ff00 transparent transparent;
             transform-origin: top left;
+            font-size: 14px;  /* Размер текста */
+            color: black;        /* Цвет текста */
+            text-align: center; /* Выравнивание текста */
+            line-height: 300px; /* Центрирование текста по вертикали */
+            width: 300px;        /* Ensure segments take full width to center text*/
+            height: 300px;
+            box-sizing: border-box;
         }
 
-        /* Цвета для сегментов */
+        /* Цвета и позиции для сегментов */
         .segment:nth-child(1) { transform: rotate(0deg); border-color: transparent #00ff00 transparent transparent; }
-        .segment:nth-child(2) { transform: rotate(40deg); border-color: transparent #00c800 transparent transparent; }
-        .segment:nth-child(3) { transform: rotate(80deg); border-color: transparent #009600 transparent transparent; }
-        .segment:nth-child(4) { transform: rotate(120deg); border-color: transparent #006400 transparent transparent; }
-        .segment:nth-child(5) { transform: rotate(160deg); border-color: transparent #32cd32 transparent transparent; }
-        .segment:nth-child(6) { transform: rotate(200deg); border-color: transparent #3cb371 transparent transparent; }
-        .segment:nth-child(7) { transform: rotate(240deg); border-color: transparent #2e8b57 transparent transparent; }
-        .segment:nth-child(8) { transform: rotate(280deg); border-color: transparent #228b22 transparent transparent; }
-        .segment:nth-child(9) { transform: rotate(320deg); border-color: transparent #008000 transparent transparent; }
+        .segment:nth-child(2) { transform: rotate(40deg); border-color: transparent #32CD32 transparent transparent; }
+        .segment:nth-child(3) { transform: rotate(80deg); border-color: transparent #00FA9A transparent transparent; }
+        .segment:nth-child(4) { transform: rotate(120deg); border-color: transparent #90EE90 transparent transparent; }
+        .segment:nth-child(5) { transform: rotate(160deg); border-color: transparent #98FB98 transparent transparent; }
+        .segment:nth-child(6) { transform: rotate(200deg); border-color: transparent #ADFF2F transparent transparent; }
+        .segment:nth-child(7) { transform: rotate(240deg); border-color: transparent #7FFF00 transparent transparent; }
+        .segment:nth-child(8) { transform: rotate(280deg); border-color: transparent #7CFC00 transparent transparent; }
+        .segment:nth-child(9) { transform: rotate(320deg); border-color: transparent #00FF7F transparent transparent; }
 
         #spinButton {
             position: relative;
             top: -100px;
             margin: 0 auto;
             padding: 10px 20px;
-            background-color: #00ff00; /* Зеленая кнопка */
-            color: #000000; /* Черный текст на кнопке */
+            background-color: #00ff00;
+            color: #000000;
             border: none;
             cursor: pointer;
             border-radius: 5px;
             font-size: 1.1em;
-            box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3); /* Зеленая тень кнопки */
+            box-shadow: 0 2px 4px rgba(0, 255, 0, 0.3);
         }
 
         #spinButton:hover {
-            background-color: #00c800; /* Более темный зеленый цвет при наведении */
+            background-color: #00c800;
         }
 
         #result {
             margin-top: 20px;
             font-size: 1.2em;
             font-weight: bold;
-            color: #00ff00; /* Зеленый цвет результата */
+            color: #00ff00;
         }
     </style>
 </head>
 <body>
 
-    <h1>Зеленая Рулетка Подарков</h1>
+    <h1>Вращающаяся Зеленая Рулетка Подарков</h1>
 
     <div id="rouletteContainer">
         <div id="roulette">
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
-            <div class="segment"></div>
+            <div class="segment">Скидка 10%</div>
+            <div class="segment">Беспл. доставка</div>
+            <div class="segment">Стикерпак</div>
+            <div class="segment">Промокод 500</div>
+            <div class="segment">Секретный подарок</div>
+            <div class="segment">Купон 20%</div>
+            <div class="segment">Футболка</div>
+            <div class="segment">Кружка</div>
+            <div class="segment">Брелок</div>
         </div>
     </div>
 
@@ -114,13 +121,13 @@
 
         const gifts = [
             "Скидка 10%",
-            "Бесплатная доставка",
+            "Беспл. доставка",
             "Стикерпак",
-            "Промокод на 500 рублей",
-            "Секретный подарок!",
-            "Купон на 20%",
-            "Футболка с логотипом",
-            "Кружка с вашим дизайном",
+            "Промокод 500",
+            "Секретный подарок",
+            "Купон 20%",
+            "Футболка",
+            "Кружка",
             "Брелок"
         ];
 
@@ -142,7 +149,6 @@
                 resultDiv.textContent = `Вы выиграли: ${gift}!`;
                 spinButton.disabled = false;
 
-                // Отправка данных боту
                 const giftId = winningSegment + 1;
                 const price = 50;
                 const data = JSON.stringify({ gift_id: giftId, price: price });
@@ -156,6 +162,3 @@
 
 </body>
 </html>
-
-
-
