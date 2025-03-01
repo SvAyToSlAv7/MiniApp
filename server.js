@@ -76,7 +76,7 @@ bot.startPolling();
 const productName = "Test Product";
 const description = "Test description";
 const payload = "unique_payload";
-const providerToken = process.env.TELEGRAM_TOKEN;
+const providerToken = "7269213705:AAGsFeTTBZnsds1s-TCs7r0t9iaJTV0SgtQ";
 const currency = "XTR";
 const prices = [{ amount: 100, label: productName }];
 
