@@ -1,68 +1,67 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Оплата Telegram Stars</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата Telegram Stars</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Оплата Telegram Stars</h1>
-  <button id="payButton">Оплатить</button>
-  <p id="paymentStatus"></p>
+    <h1>Оплата Telegram Stars</h1>
+    <button id="payButton">Оплатить</button>
+    <p id="paymentStatus"></p>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-    const payButton = document.getElementById('payButton');
-    const paymentStatus = document.getElementById('paymentStatus');
+        const payButton = document.getElementById('payButton');
+        const paymentStatus = document.getElementById('paymentStatus');
 
-    payButton.addEventListener('click', async () => {
-      paymentStatus.textContent = "Загрузка..."; // Индикация загрузки
+        payButton.addEventListener('click', async () => {
+            paymentStatus.textContent = "Загрузка..."; // Индикация загрузки
 
-      try {
-        // 1. Получить ссылку на оплату от backend
-        const response = await fetch('/create-invoice', { // Теперь относительный URL
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
+            try {
+                // Получить ссылку на оплату от backend
+                const response = await fetch('/create-invoice', { // Относительный URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const invoiceLink = data.invoiceLink;
+
+                // Открыть окно оплаты
+                tg.openInvoice(invoiceLink, (status) => {
+                    if (status === "paid") {
+                        paymentStatus.textContent = "Оплачено! Спасибо за покупку.";
+                        // Можно добавить дополнительную логику после оплаты
+                    } else if (status === "failed") {
+                        paymentStatus.textContent = "Ошибка оплаты. Попробуйте еще раз.";
+                    } else if (status === "cancelled") {
+                        paymentStatus.textContent = "Оплата отменена.";
+                    } else {
+                        paymentStatus.textContent = `Статус оплаты: ${status}`; // Дополнительные статусы
+                    }
+                });
+            } catch (error) {
+                console.error("Ошибка при выполнении запроса:", error);
+                paymentStatus.textContent = "Произошла ошибка. Попробуйте позже.";
+            }
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const invoiceLink = data.invoiceLink;
-
-        // 2. Открыть окно оплаты
-        tg.openInvoice(invoiceLink, (status) => {
-          if (status === "paid") {
-            // 3. Обработать успешную оплату
-            paymentStatus.textContent = "Оплачено! Спасибо за покупку.";
-          } else if (status === "failed") {
-            paymentStatus.textContent = "Ошибка оплаты. Попробуйте еще раз.";
-          } else if (status === "cancelled") {
-            paymentStatus.textContent = "Оплата отменена.";
-          } else {
-            paymentStatus.textContent = `Статус оплаты: ${status}`; // Дополнительные статусы
-          }
-        });
-      } catch (error) {
-        console.error("Ошибка при выполнении запроса:", error);
-        paymentStatus.textContent = "Произошла ошибка. Попробуйте позже.";
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
